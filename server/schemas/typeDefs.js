@@ -1,3 +1,4 @@
+// Define the collections, query, and mutations
 const typeDefs= `
 type User{
     _id: ID

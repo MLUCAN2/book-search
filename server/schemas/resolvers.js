@@ -1,7 +1,7 @@
-const { Query } = require('../../../../activities/21-MERN/01-Activities/25-Ins_Resolver-Context/server/schemas/resolvers');
 const { User, Book } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
+// Query db
 const resolvers={
     Query:{
         me: async (parent, args, context) => {
@@ -15,6 +15,7 @@ const resolvers={
         }
     },
     Mutation:{
+        // Mutation for the login authentication
         login: async (parent, {email,password})=> {
             const user = await User.findOne({ email});
             if (!user) {
@@ -27,11 +28,13 @@ const resolvers={
             const token = signToken(user);
             return { token, user };
         },
+        // Mutation to add user
         addUser: async(parent, args)=>{
             const user = await User.create(args);
             const token = signToken(user);
             return { token, user };
         },
+        // Mutation to save a book
         saveBook: async(parent  , {bookData},context)=> {
             if (context.user){
                 const updateUser= await User.findByIdAndUpdate(
@@ -43,6 +46,7 @@ const resolvers={
             }
             throw new AuthenticationError('You need to be logged in!');
         },
+        // Mutation to remove a book
         removeBook: async(parent, {bookId},context)=> {
             if (context.user){
                 const updateUser= await User.findByIdAndUpdate(
